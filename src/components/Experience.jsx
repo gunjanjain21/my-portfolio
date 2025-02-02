@@ -132,7 +132,7 @@ export const Experience = () => {
             'Built market simulators and a heuristic engine to replicate real-world trading conditions, allowing traders and QA teams to test strategies under race conditions.',
           ],
         },
-        'Also worked on designing and implementing generic backend frameworks for global banks, including reusable modules for authentication, transaction processing, and reporting.',
+        'Worked on designing and implementing generic backend frameworks for global banks, including reusable modules for authentication, transaction processing, and reporting.',
         'Implemented rate lock feature for MEBank Australia that allowed customers of MEBank to freeze the interest rates on loans for pre-defined period that led to an increase in business of over XXM$ over a period of 1 year.',
       ],
     },
