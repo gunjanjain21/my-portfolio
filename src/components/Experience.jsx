@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 const TechBadge = ({ name, isHighlighted }) => (
-  <motion.div 
+  <motion.div
     whileHover={{ scale: 1.1 }}
     animate={{
       backgroundColor: isHighlighted ? '#FF5A5F' : '#f3f4f6',
@@ -29,7 +29,7 @@ const ExperienceCard = ({ company, logo, role, duration, description, skills, on
   }, [inView, onInView, skills]);
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -37,7 +37,7 @@ const ExperienceCard = ({ company, logo, role, duration, description, skills, on
       className="experience-card mb-12 p-6 rounded-xl hover:bg-gray-50"
     >
       <div className="flex items-center mb-4">
-        <motion.div 
+        <motion.div
           whileHover={{ rotate: 360 }}
           transition={{ duration: 0.6 }}
           className="w-10 h-10 mr-4 flex items-center justify-center"
@@ -46,7 +46,7 @@ const ExperienceCard = ({ company, logo, role, duration, description, skills, on
         </motion.div>
         <h3 className="text-xl font-semibold text-gray-900">{company}</h3>
       </div>
-      
+
       <div className="ml-14">
         <div className="mb-2">
           <div className="text-gray-700 font-medium">{role}</div>
@@ -55,10 +55,10 @@ const ExperienceCard = ({ company, logo, role, duration, description, skills, on
             <span>{location}</span>
           </div>
         </div>
-        
+
         <ul className="space-y-3 text-gray-600 mb-4">
           {description.map((item, index) => (
-            <motion.li 
+            <motion.li
               key={index}
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -66,7 +66,31 @@ const ExperienceCard = ({ company, logo, role, duration, description, skills, on
               className="flex items-start"
             >
               <span className="mr-2">•</span>
-              <span className="flex-1">{item}</span>
+              <div className="flex-1">
+                {typeof item === 'string' ? (
+                  <span>{item}</span>
+                ) : (
+                  <>
+                    <span>{item.mainPoint}</span>
+                    {item.subPoints && item.subPoints.length > 0 && (
+                      <ul className="list-disc ml-5 mt-2 space-y-2">
+                        {item.subPoints.map((subPoint, subIndex) => (
+                          <motion.li
+                            key={subIndex}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={inView ? { opacity: 1, x: 0 } : {}}
+                            transition={{ delay: (index + (subIndex * 0.1) + 1) * 0.2 }} // Adjusted delay for sub-points
+                            className="flex items-start"
+                          >
+                            <span className="mr-2">•</span>
+                            <span className="flex-1">{subPoint}</span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
+                )}
+              </div>
             </motion.li>
           ))}
         </ul>
@@ -85,11 +109,12 @@ export const Experience = () => {
       role: 'Full Stack Software Engineer',
       duration: 'Aug 2024 - Present',
       location: 'San Francisco, CA',
-      skills: ['React', 'Next JS','JavaScript', 'Java', 'REST APIs', 'MySQL', 'Node JS', 'Python','SpringBoot'],
+      skills: ['React', 'Next JS', 'JavaScript', 'Java', 'REST APIs', 'MySQL', 'Node JS', 'Python', 'SpringBoot'],
       description: [
-        'Developed an internal dashboard tool using React and TypeScript that helped visualize all pending claims of users through a single portal, helping increase the speed of debugging by more than 50%.',
-        'Developed a tool for managing the deployment of critical updates to production environments, achieving a 95% success rate in first-attempt deployments.',
-        'Employed Python, PostgreSQL and Redis to optimize database queries, reducing response times by 40% and improving application performance.',
+        'Worked as part of the Claims Infrastructure team, designing and implementing scalable backend services that process 100+ claims per minute, handling XXXM$ in transactions.',
+        'Developed a claims visualization dashboard that consolidated data from 10+ portals, reducing manual effort and improving operational efficiency.',
+        'Optimized API performance and database queries, enhancing system responsiveness and scalability for real-time claims processing.',
+        'Collaborated with cross-functional teams to improve claim validation and adjudication workflows, ensuring regulatory compliance and reducing processing delays.',
       ],
     },
     {
@@ -98,11 +123,17 @@ export const Experience = () => {
       role: 'Software Developer',
       duration: 'Jan 2022 - Apr 2024',
       location: 'Bengaluru, IN',
-      skills: ['jBASE', 'Jenkins', 'CI/CD Pipelines','Selenium', 'Java', 'SpringBoot', 'REST APIs'],
+      skills: ['jBASE', 'Jenkins', 'CI/CD Pipelines', 'Selenium', 'Java', 'SpringBoot', 'REST APIs'],
       description: [
-        'Worked as a software developer in the Frameworks Development (FDAS) team developing generic framework solutions for global banks, which improved development efficiency by 40%.',
-        'Integrated various APIs and third-party services into existing applications.',
-        'Engineered a loan interest rate lock feature for Virgin Money Australian Bank, securing predetermined rates for customers and reducing unforeseen interest expenses by 20%, enhancing customer satisfaction and retention',
+        {
+          mainPoint: 'Worked in the platform team, where I developed and optimized a high-frequency trading (HFT) platform for US stock markets (CME, NASDAQ), enhancing execution speed and strategy testing capabilities.',
+          subPoints: [
+            'Designed and implemented a low-latency order execution system, enabling traders to execute trades at ultra-fast speeds.',
+            'Built market simulators and a heuristic engine to replicate real-world trading conditions, allowing traders and QA teams to test strategies under race conditions.',
+          ],
+        },
+        'Also worked on designing and implementing generic backend frameworks for global banks, including reusable modules for authentication, transaction processing, and reporting.',
+        'Implemented rate lock feature for MEBank Australia that allowed customers of MEBank to freeze the interest rates on loans for pre-defined period that led to an increase in business of over XXM$ over a period of 1 year.',
       ],
     },
     {
@@ -113,21 +144,26 @@ export const Experience = () => {
       location: 'Bengaluru, IN',
       skills: ['AWS CloudFormation', 'Data Migration', 'Microservices', 'SpringBoot', 'REST APIs', 'AWS Cloud', 'PostgreSQL', 'Next JS', 'C++'],
       description: [
-        'Developed a platform that allowed different banks to migrate their on-premise datacenter services to the cloud environment (AWS Cloud) that led to 2M$ average annual savings for customers.',
-        'Designed and implemented a front-end platform using JavaScript, NodeJS, and React.JS for banks, enabling easy access to cloud services.',
-        'Worked with 5 different banks that migrated to the platform helping lead to a CSAT score of 90%.',
+        {
+          mainPoint: 'Developed a platform that allowed different banks to migrate their on-premise datacenter services to the cloud environment (AWS Cloud), leading to $2M in average annual savings for customers.',
+          subPoints: [
+            'Backend: Designed and developed two microservices: one for authentication of users and cloud services by integrating with the company\'s LDAP server, and another for storing and managing metadata related to team onboarding and deployed services.',
+            'Frontend: Built a UI-based platform that enabled users to deploy their services using a lift-and-shift model, simplifying cloud migration through an intuitive interface.',
+          ],
+        },
+        'Worked with 5+ different banks to help them on-board the platform and save over XXM$ in savings by moving away from on premise data centers.',
       ],
     },
   ];
 
   const technologies = [
-    'AWS CloudFormation','REST APIs', 'jBASE', 
+    'AWS CloudFormation', 'REST APIs', 'jBASE',
     'React', 'Node JS',
-    'PostgreSQL', 'Data Migration','Microservices',
-    'JavaScript', 'Jenkins', 'Next JS', 
-    'C++','CI/CD Pipelines', 'AWS Cloud', 
-    'MongoDB', 'AWS Lambda', 
-    'MySQL', 'Selenium','SpringBoot',
+    'PostgreSQL', 'Data Migration', 'Microservices',
+    'JavaScript', 'Jenkins', 'Next JS',
+    'C++', 'CI/CD Pipelines', 'AWS Cloud',
+    'MongoDB', 'AWS Lambda',
+    'MySQL', 'Selenium', 'SpringBoot',
     'Python', 'Java'
   ];
 
@@ -141,20 +177,20 @@ export const Experience = () => {
       <h2 className="text-3xl font-bold mb-12 text-center">
         Experience
       </h2>
-      
+
       <div ref={ref} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           {experiences.map((exp, index) => (
-            <ExperienceCard 
-              key={index} 
-              {...exp} 
+            <ExperienceCard
+              key={index}
+              {...exp}
               onInView={(skills) => setActiveSkills(skills)}
             />
           ))}
         </div>
-        
+
         <div className="lg:col-span-1">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6 }}
@@ -162,9 +198,9 @@ export const Experience = () => {
           >
             <div className="flex flex-wrap gap-2">
               {technologies.map((tech, index) => (
-                <TechBadge 
-                  key={index} 
-                  name={tech} 
+                <TechBadge
+                  key={index}
+                  name={tech}
                   isHighlighted={activeSkills.includes(tech)}
                 />
               ))}
