@@ -5,16 +5,23 @@ import { useInView } from 'react-intersection-observer';
 const TechBadge = ({ name, isHighlighted }) => (
   <motion.div
     whileHover={{ scale: 1.1 }}
+    initial={{ opacity: 0, scale: 0 }}
     animate={{
+      opacity: 1,
+      scale: 1,
       backgroundColor: isHighlighted ? '#FF5A5F' : '#f3f4f6',
       color: isHighlighted ? '#ffffff' : '#374151',
     }}
-    transition={{ duration: 0.3 }}
+    // transition={{
+      // duration: 0.6, 
+      // ease: "easeInOut",
+    // }}
     className="tech-badge inline-flex items-center px-3 py-1 rounded-full text-sm mr-2 mb-2 cursor-pointer"
   >
     {name}
   </motion.div>
 );
+
 
 const ExperienceCard = ({ company, logo, role, duration, description, skills, onInView, location }) => {
   const [ref, inView] = useInView({
@@ -33,13 +40,13 @@ const ExperienceCard = ({ company, logo, role, duration, description, skills, on
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6 }}
-      className="experience-card mb-12 p-6 rounded-xl hover:bg-gray-50"
+      transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }} // Slow and smooth transition
+      className="experience-card mb-12 p-6 rounded-xl hover:bg-gray-50 snap-start"
     >
       <div className="flex items-center mb-4">
         <motion.div
           whileHover={{ rotate: 360 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }} // Slow and smooth transition
           className="w-10 h-10 mr-4 flex items-center justify-center"
         >
           <img src={logo} alt={company} className="w-full h-full object-contain" />
@@ -62,7 +69,7 @@ const ExperienceCard = ({ company, logo, role, duration, description, skills, on
               key={index}
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: index * 0.2 }}
+              transition={{ delay: index * 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }} // Slow and smooth transition
               className="flex items-start"
             >
               <span className="mr-2">•</span>
@@ -79,7 +86,7 @@ const ExperienceCard = ({ company, logo, role, duration, description, skills, on
                             key={subIndex}
                             initial={{ opacity: 0, x: -20 }}
                             animate={inView ? { opacity: 1, x: 0 } : {}}
-                            transition={{ delay: (index + (subIndex * 0.1) + 1) * 0.2 }} // Adjusted delay for sub-points
+                            transition={{ delay: (index + (subIndex * 0.1) + 1) * 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }} // Slow and smooth transition
                             className="flex items-start"
                           >
                             <span className="mr-2">•</span>
@@ -173,13 +180,13 @@ export const Experience = () => {
   });
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto snap-y snap-mandatory">
       <h2 className="text-3xl font-bold mb-12 text-center">
         Experience
       </h2>
 
-      <div ref={ref} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
+      <div ref={ref} className="grid grid-cols-1 lg:grid-cols-3 gap-8 snap-y snap-mandatory">
+        <div className="lg:col-span-2 snap-start">
           {experiences.map((exp, index) => (
             <ExperienceCard
               key={index}
@@ -189,11 +196,11 @@ export const Experience = () => {
           ))}
         </div>
 
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 snap-start">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }} // Slow and smooth transition
             className="sticky top-24"
           >
             <div className="flex flex-wrap gap-2">
